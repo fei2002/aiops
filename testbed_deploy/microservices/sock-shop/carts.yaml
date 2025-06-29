@@ -1,0 +1,159 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: carts
+  labels:
+    name: carts
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      name: carts
+  template:
+    metadata:
+      labels:
+        name: carts
+    spec:
+      containers:
+        - name: carts
+          image: weaveworksdemos/carts:0.4.8
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: JAVA_OPTS
+              value: -Xms64m -Xmx128m -XX:+UseG1GC -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false
+#            - name: zipkin
+#              value: zipkin.jaeger.svc.cluster.local
+#              value: zipkin-mongo.default.svc.cluster.local
+          resources:
+            requests:
+              cpu: 100m
+              memory: 200Mi
+#            limits:
+#              cpu: 200m
+#              memory: 800Mi
+          ports:
+            - containerPort: 80
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 10001
+            capabilities:
+              drop:
+                - all
+              add:
+                - NET_BIND_SERVICE
+            readOnlyRootFilesystem: true
+          volumeMounts:
+            - mountPath: /tmp
+              name: tmp-volume
+            - name: localtime
+              mountPath: /etc/localtime
+
+      tolerations:
+        - key: "sockshop"
+          operator: "Equal"
+          value: "true"
+          effect: "NoSchedule"
+      volumes:
+        - name: tmp-volume
+          emptyDir:
+            medium: Memory
+
+        - name: localtime
+          hostPath:
+            path: /usr/share/zoneinfo/Asia/Shanghai
+#      nodeSelector:
+#        beta.kubernetes.io/os: linux
+#        sockshop: "true"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: carts
+  annotations:
+    prometheus.io/scrape: 'true'
+  labels:
+    name: carts
+spec:
+  ports:
+    # the port that this service should serve on
+    - port: 80
+      targetPort: 80
+  selector:
+    name: carts
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: carts-db
+  labels:
+    name: carts-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: carts-db
+  template:
+    metadata:
+      labels:
+        name: carts-db
+    spec:
+      tolerations:
+        - key: "sockshop"
+          operator: "Equal"
+          value: "true"
+          effect: "NoSchedule"
+      containers:
+        - name: carts-db
+          image: mongo:4.2.22
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: mongo
+              containerPort: 27017
+          securityContext:
+            capabilities:
+              drop:
+                - all
+              add:
+                - CHOWN
+                - SETGID
+                - SETUID
+            readOnlyRootFilesystem: true
+          resources:
+            requests:
+              cpu: 100m
+              memory: 100Mi
+#            limits:
+#              cpu: 400m
+#              memory: 400Mi
+          volumeMounts:
+            - mountPath: /tmp
+              name: tmp-volume
+            - name: localtime
+              mountPath: /etc/localtime
+      volumes:
+        - name: tmp-volume
+          emptyDir:
+            medium: Memory
+        - name: localtime
+          hostPath:
+            path: /usr/share/zoneinfo/Asia/Shanghai
+#      nodeSelector:
+#        beta.kubernetes.io/os: linux
+#        sockshop: "true"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: carts-db
+  labels:
+    name: carts-db
+spec:
+  ports:
+    # the port that this service should serve on
+    - port: 27017
+      targetPort: 27017
+  selector:
+    name: carts-db

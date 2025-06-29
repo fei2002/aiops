@@ -1,0 +1,20 @@
+kind: NetworkChaos
+apiVersion: chaos-mesh.org/v1alpha1
+metadata:
+  namespace: chaos-mesh
+  name: {}
+spec:
+  action: bandwidth
+  mode: all
+  selector:
+    namespaces:
+      - {}
+    labelSelectors:
+      name: {}
+  bandwidth:
+    rate: {}
+    limit: {}
+    buffer: {}
+  duration: {}
+  device: {}
+  direction: to

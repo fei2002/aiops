@@ -1,0 +1,14 @@
+kind: TimeChaos
+apiVersion: chaos-mesh.org/v1alpha1
+metadata:
+  namespace: chaos-mesh
+  name: {}
+spec:
+  mode: all
+  selector:
+    namespaces:
+      - {}
+    labelSelectors:
+      name: {}
+  timeOffset: {}
+  duration: {}

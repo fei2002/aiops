@@ -1,0 +1,42 @@
+{
+  "input": {
+    "cpu-stress": [
+      {
+        "name": "load",
+        "msg": "range 0~100 for each load worker",
+        "level": "spec.stress-cpu.load",
+        "type": "int"
+      },
+      {
+        "name": "workers",
+        "msg": "number of workers to generate load",
+        "level": "spec.stress-cpu.workers",
+        "type": "int"
+      },
+      {
+        "name": "duration",
+        "msg": "experiment duration",
+        "level": "spec.duration",
+        "type": "string"
+      }
+    ],
+    "mem-stress": [
+      {
+        "name": "size",
+        "msg": "memory size to stress, support B, KB, MB, GB and TB",
+        "level": "spec.stress-mem.size",
+        "type": "string"
+      },
+      {
+        "name": "duration",
+        "msg": "experiment duration，eg: 30s, 3m",
+        "level": "spec.duration",
+        "type": "string"
+      }
+    ]
+	},
+  "predefined": {
+    "name": "metadata.name",
+    "address": "spec.address"
+  }
+}

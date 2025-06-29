@@ -1,0 +1,170 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user
+  labels:
+    name: user
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      name: user
+  template:
+    metadata:
+      labels:
+        name: user
+    spec:
+      tolerations:
+        - key: "sockshop"
+          operator: "Equal"
+          value: "true"
+          effect: "NoSchedule"
+      containers:
+        - name: user
+          image: weaveworksdemos/user:0.4.7
+          imagePullPolicy: IfNotPresent
+          resources:
+#            limits:
+#              cpu: 300m
+#              memory: 200Mi
+            requests:
+              cpu: 100m
+              memory: 50Mi
+          ports:
+            - containerPort: 80
+          env:
+            - name: mongo
+              value: user-db:27017
+            # - name: ZIPKIN
+            #   value: http://zipkin-mongo.default.svc.cluster.local:9411/api/v1/spans
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 10001
+            capabilities:
+              drop:
+                - all
+              add:
+                - NET_BIND_SERVICE
+            readOnlyRootFilesystem: true
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 80
+            initialDelaySeconds: 10
+            periodSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 80
+            initialDelaySeconds: 20
+            periodSeconds: 5
+
+          volumeMounts:
+            - name: localtime
+              mountPath: /etc/localtime
+
+      volumes:
+        - name: localtime
+          hostPath:
+            path: /usr/share/zoneinfo/Asia/Shanghai
+#      nodeSelector:
+#        beta.kubernetes.io/os: linux
+#        sockshop: "true"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: user
+  annotations:
+    prometheus.io/scrape: 'true'
+  labels:
+    name: user
+spec:
+  ports:
+    # the port that this service should serve on
+    - port: 80
+      targetPort: 80
+  selector:
+    name: user
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user-db
+  labels:
+    name: user-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: user-db
+  template:
+    metadata:
+      labels:
+        name: user-db
+    spec:
+      tolerations:
+        - key: "sockshop"
+          operator: "Equal"
+          value: "true"
+          effect: "NoSchedule"
+      containers:
+        - name: user-db
+          image: weaveworksdemos/user-db:0.3.0
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: mongo-db
+              containerPort: 27017
+          securityContext:
+            capabilities:
+              drop:
+                - all
+              add:
+                - CHOWN
+                - SETGID
+                - SETUID
+            readOnlyRootFilesystem: true
+          volumeMounts:
+            - mountPath: /tmp
+              name: tmp-volume
+
+            - name: localtime
+              mountPath: /etc/localtime
+          resources:
+            requests:
+              cpu: 200m
+              memory: 200Mi
+#            limits:
+#              cpu: 200m
+#              memory: 200Mi
+      volumes:
+        - name: tmp-volume
+          emptyDir:
+            medium: Memory
+
+        - name: localtime
+          hostPath:
+            path: /usr/share/zoneinfo/Asia/Shanghai
+
+#      nodeSelector:
+#        beta.kubernetes.io/os: linux
+#        sockshop: "true"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: user-db
+  labels:
+    name: user-db
+spec:
+  ports:
+    # the port that this service should serve on
+    - port: 27017
+      targetPort: 27017
+  selector:
+    name: user-db
+

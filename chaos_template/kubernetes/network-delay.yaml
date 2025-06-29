@@ -1,0 +1,20 @@
+kind: NetworkChaos
+apiVersion: chaos-mesh.org/v1alpha1
+metadata:
+  namespace: chaos-mesh
+  name: {}
+spec:
+  action: delay
+  mode: all
+  selector:
+    namespaces:
+      - {}
+    labelSelectors:
+      name: {}
+  delay:
+    latency: {}
+    jitter: {}
+    correlation: {}
+  direction: to
+  duration: {}
+  device: {}

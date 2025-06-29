@@ -1,0 +1,12 @@
+{
+	"folders": [
+		{
+			"path": ".."
+		},
+		{
+			"name": "microops-fe",
+			"path": "../../microops-fe"
+		}
+	],
+	"settings": {}
+}

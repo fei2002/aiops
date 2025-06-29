@@ -1,0 +1,18 @@
+# ALERT: DO NOT USE CTRL+L TO FORMAT THIS FILE.
+# ALERT: DO NOT USE CTRL+L TO FORMAT THIS FILE.
+# ALERT: DO NOT USE CTRL+L TO FORMAT THIS FILE.
+
+kind: PhysicalMachineChaos
+apiVersion: chaos-mesh.org/v1alpha1
+metadata:
+  namespace: chaos-mesh
+  name: {}
+spec:
+  action: stress-cpu
+  address:
+    - {}
+  mode: all
+  stress-cpu:
+    load: {}
+    workers: {}
+  duration: {}

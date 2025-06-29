@@ -1,0 +1,24 @@
+kind: HTTPChaos
+apiVersion: chaos-mesh.org/v1alpha1
+metadata:
+  namespace: chaos-mesh
+  name: {}
+spec:
+  mode: all
+  selector:
+    namespaces:
+      - {}
+    labelSelectors:
+      name: {}
+  target: {} # Request
+  port: {} # 80
+  method: {} # GET
+  path: {} # /api
+  patch:
+    headers:
+      - {} # ['Token', '<one token>']
+      - {} # ['Token', '<another token>']
+    body:
+      type: {} # JSON
+      value: {} # '{"foo": "bar"}'
+  duration: {} # 5m

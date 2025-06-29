@@ -1,0 +1,67 @@
+#---
+#apiVersion: apps/v1
+#kind: Deployment
+#metadata:
+#  name: queue-master
+#  labels:
+#    name: queue-master
+#spec:
+#  replicas: 1
+#  selector:
+#    matchLabels:
+#      name: queue-master
+#  template:
+#    metadata:
+#      labels:
+#        name: queue-master
+#    spec:
+#      tolerations:
+#        - key: "sockshop"
+#          operator: "Equal"
+#          value: "true"
+#          effect: "NoSchedule"
+#      containers:
+#        - name: queue-master
+#          image: weaveworksdemos/queue-master:0.3.1
+#          imagePullPolicy: IfNotPresent
+#          env:
+#            - name: JAVA_OPTS
+#              value: -Xms64m -Xmx128m -XX:+UseG1GC -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=true
+#          resources:
+#            limits:
+#              cpu: 300m
+#              memory: 800Mi
+#            requests:
+#              cpu: 100m
+#              memory: 400Mi
+#          ports:
+#            - containerPort: 80
+#
+#          volumeMounts:
+#            - name: localtime
+#              mountPath: /etc/localtime
+#      nodeSelector:
+#        beta.kubernetes.io/os: linux
+#        sockshop: "true"
+#
+#      volumes:
+#        - name: localtime
+#          hostPath:
+#            path: /usr/share/zoneinfo/Asia/Shanghai
+#
+#---
+#apiVersion: v1
+#kind: Service
+#metadata:
+#  name: queue-master
+#  annotations:
+#    prometheus.io/scrape: 'true'
+#  labels:
+#    name: queue-master
+#spec:
+#  ports:
+#    # the port that this service should serve on
+#    - port: 80
+#      targetPort: 80
+#  selector:
+#    name: queue-master

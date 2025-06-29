@@ -1,0 +1,23 @@
+apiVersion: chaos-mesh.org/v1alpha1
+kind: Schedule
+metadata:
+  name: schedule-cpu-stress-8e9c0c08-3e12
+  namespace: chaos-mesh
+spec:
+  concurrencyPolicy: Forbid
+  historyLimit: 1
+  schedule: '@every 5m'
+  startingDeadlineSeconds: null
+  stressChaos:
+    duration: 2m
+    mode: all
+    selector:
+      labelSelectors:
+        name: orders
+      namespaces:
+      - sock-shop-full-2d27aa7f-3832-4f21
+    stressors:
+      cpu:
+        load: 30
+        workers: 1
+  type: StressChaos

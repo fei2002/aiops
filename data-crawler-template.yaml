@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: { }
+  namespace: data-crawler
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: { }
+  template:
+    metadata:
+      labels:
+        app: { }
+    spec:
+      containers:
+        - image: registry.cn-beijing.aliyuncs.com/bupt2018/data-crawler:latest
+          imagePullPolicy: Always
+          name: data-crawler
+          env:
+            - name: namespace
+              value: { }

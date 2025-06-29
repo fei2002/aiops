@@ -1,0 +1,18 @@
+kind: IOChaos
+apiVersion: chaos-mesh.org/v1alpha1
+metadata:
+  namespace: chaos-mesh
+  name: {}
+spec:
+  action: fault
+  mode: all
+  selector:
+    namespaces:
+      - {}
+    labelSelectors:
+      name: {}
+  volumePath: {}
+  path: {}
+  errno: {}
+  percent: {}
+  duration: {}

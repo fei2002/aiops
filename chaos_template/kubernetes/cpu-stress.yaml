@@ -1,0 +1,21 @@
+# ALERT: DO NOT USE CTRL+L TO FORMAT THIS FILE.
+# ALERT: DO NOT USE CTRL+L TO FORMAT THIS FILE.
+# ALERT: DO NOT USE CTRL+L TO FORMAT THIS FILE.
+
+kind: StressChaos
+apiVersion: chaos-mesh.org/v1alpha1
+metadata:
+  namespace: chaos-mesh
+  name: {}
+spec:
+  selector:
+    namespaces:
+      - {}
+    labelSelectors:
+      name: {}
+  mode: all
+  stressors:
+    cpu:
+      workers: {}
+      load: {}
+  duration: {}

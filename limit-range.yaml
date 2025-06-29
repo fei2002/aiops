@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: user-cpu-min-max
+spec:
+  limits:
+  - max:
+      cpu: "300m"
+    min:
+      cpu: "50m"
+    type: Container
+---
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: user-mem-min-max
+spec:
+  limits:
+  - max:
+      memory: 500Mi
+    min:
+      memory: 50Mi
+    type: Container
+

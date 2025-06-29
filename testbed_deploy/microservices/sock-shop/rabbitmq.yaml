@@ -1,0 +1,93 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rabbitmq
+  labels:
+    name: rabbitmq
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: rabbitmq
+  template:
+    metadata:
+      labels:
+        name: rabbitmq
+      annotations:
+        prometheus.io/scrape: "false"
+    spec:
+      tolerations:
+        - key: "sockshop"
+          operator: "Equal"
+          value: "true"
+          effect: "NoSchedule"
+      containers:
+        - name: rabbitmq
+          image: rabbitmq:3.6.8-management
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 15672
+              name: management
+            - containerPort: 5672
+              name: rabbitmq
+          securityContext:
+            capabilities:
+              drop:
+                - all
+              add:
+                - CHOWN
+                - SETGID
+                - SETUID
+                - DAC_OVERRIDE
+            readOnlyRootFilesystem: true
+          resources:
+            requests:
+              cpu: 100m
+              memory: 200Mi
+#            limits:
+#              cpu: 200m
+#              memory: 400Mi
+          volumeMounts:
+            - name: localtime
+              mountPath: /etc/localtime
+
+        - name: rabbitmq-exporter
+          image: kbudde/rabbitmq-exporter
+          ports:
+            - containerPort: 9090
+              name: exporter
+          volumeMounts:
+            - name: localtime
+              mountPath: /etc/localtime
+
+#      nodeSelector:
+#        beta.kubernetes.io/os: linux
+#        sockshop: "true"
+
+      volumes:
+        - name: localtime
+          hostPath:
+            path: /usr/share/zoneinfo/Asia/Shanghai
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rabbitmq
+  annotations:
+    prometheus.io/scrape: 'true'
+    prometheus.io/port: '9090'
+  labels:
+    name: rabbitmq
+spec:
+  ports:
+    # the port that this service should serve on
+    - port: 5672
+      name: rabbitmq
+      targetPort: 5672
+    - port: 9090
+      name: exporter
+      targetPort: exporter
+      protocol: TCP
+  selector:
+    name: rabbitmq

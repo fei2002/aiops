@@ -1,0 +1,16 @@
+kind: BlockChaos
+apiVersion: chaos-mesh.org/v1alpha1
+metadata:
+  namespace: chaos-mesh
+  name: {}
+spec:
+  mode: all
+  selector:
+    namespaces:
+      - {}
+    labelSelectors:
+      name: {}
+  volumeName: {} # hostpath-example
+  action: {} # delay
+  delay:
+    latency: {} # 1s

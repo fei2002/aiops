@@ -1,0 +1,30 @@
+---
+apiVersion: "apps/v1"
+kind: "Deployment"
+metadata:
+  name: "load-maker-master"
+spec:
+  selector:
+    matchLabels:
+      app: load-maker-master
+  replicas: 1
+
+  minReadySeconds: 5
+  template:
+    metadata:
+      labels:
+        app: "load-maker-master"
+    spec:
+      containers:
+        - name: "load-maker-master"
+          image: "seineo/train-ticket-load-test:v1"
+          imagePullPolicy: IfNotPresent
+          command: [ "sh" ]
+          args: ["master.sh"]
+
+
+      tolerations:
+        - key: node-role.kubernetes.io/master
+          operator: Exists
+          effect: NoSchedule
+        

@@ -1,0 +1,604 @@
+{
+  "input": {
+    "block-latency": [
+      {
+        "name": "volumeName",
+        "msg": "Specifies the volume to inject in the target pods. There should be a corresponding entry in the pods' .spec.volumes",
+        "level": "spec.volumeName",
+        "type": "string"
+      },
+      {
+        "name": "action",
+        "msg": "Indicates the specific type of faults. The available fault types include delay and freeze",
+        "level": "spec.action",
+        "type": "string"
+      },
+      {
+        "name": "latency",
+        "msg": "Specifies the latency of the block device",
+        "level": "spec.delay.latency",
+        "type": "string"
+      }
+    ],
+
+    "container-kill": [
+      {
+        "name": "containerNames",
+        "msg": "Specifies the target container name for injecting faults",
+        "level": "spec.containerNames",
+        "type": "[]string"
+      }
+    ],
+
+    "dnschaos": [
+      {
+        "name": "patterns",
+        "msg": "Selects a domain template that matches faults. Placeholder ? and wildcard * are supported",
+        "level": "spec.patterns",
+        "type": "String Array"
+      },
+      {
+        "name": "duration",
+        "msg": "Experiment duration, eg: 30s, 3m, 1h",
+        "level": "spec.duration",
+        "type": "string"
+      }
+    ],
+
+    "http-abort-failure": [
+      {
+        "name": "target",
+        "msg": "Specifies whether the target of fault injuection is Request or Response",
+        "level": "spec.target",
+        "type": "string"
+      },
+      {
+        "name": "port",
+        "msg": "The TCP port that the target service listens on",
+        "level": "spec.port",
+        "type": "int"
+      },
+      {
+        "name": "method",
+        "msg": "The HTTP method of the target request method",
+        "level": "spec.method",
+        "type": "string"
+      },
+      {
+        "name": "path",
+        "msg": "The URI path of the target request",
+        "level": "spec.path",
+        "type": "string"
+      },
+      {
+        "name": "duration",
+        "msg": "Experiment duration, eg: 30s, 3m, 1h",
+        "level": "spec.duration",
+        "type": "string"
+      }
+    ],
+
+    "http-delay-failure": [
+      {
+        "name": "target",
+        "msg": "Specifies whether the target of fault injuection is Request or Response",
+        "level": "spec.target",
+        "type": "string"
+      },
+      {
+        "name": "port",
+        "msg": "The TCP port that the target service listens on",
+        "level": "spec.port",
+        "type": "int"
+      },
+      {
+        "name": "method",
+        "msg": "The HTTP method of the target request method",
+        "level": "spec.method",
+        "type": "string"
+      },
+      {
+        "name": "path",
+        "msg": "The URI path of the target request",
+        "level": "spec.path",
+        "type": "string"
+      },
+      {
+        "name": "delay",
+        "msg": "Specifies the time for a latency fault",
+        "level": "spec.delay",
+        "type": "string"
+      },
+      {
+        "name": "duration",
+        "msg": "Experiment duration, eg: 30s, 3m, 1h",
+        "level": "spec.duration",
+        "type": "string"
+      }
+    ],
+
+    "http-patch-failure": [
+      {
+        "name": "target",
+        "msg": "Specifies whether the target of fault injuection is Request or Response",
+        "level": "spec.target",
+        "type": "string"
+      },
+      {
+        "name": "port",
+        "msg": "The TCP port that the target service listens on",
+        "level": "spec.port",
+        "type": "int"
+      },
+      {
+        "name": "method",
+        "msg": "The HTTP method of the target request method",
+        "level": "spec.method",
+        "type": "string"
+      },
+      {
+        "name": "path",
+        "msg": "The URI path of the target request",
+        "level": "spec.path",
+        "type": "string"
+      },
+      {
+        "name": "headers",
+        "msg": "Specifies the attached key pair of the request headers or response headers with patch faults",
+        "level": "spec.patch.headers",
+        "type": "[][]string"
+      },
+      {
+        "name": "type",
+        "msg": "Specifies the type of patch faults of the request body or response body. Currently, it only supports JSON",
+        "level": "spec.patch.body.type",
+        "type": "string"
+      },
+      {
+        "name": "value",
+        "msg": "Specifies the fault of the request body or response body with patch faults",
+        "level": "spec.patch.body.value",
+        "type": "string"
+      },
+      {
+        "name": "duration",
+        "msg": "Experiment duration, eg: 30s, 3m, 1h",
+        "level": "spec.duration",
+        "type": "string"
+      }
+    ],
+
+    "http-replace-failure": [
+      {
+        "name": "port",
+        "msg": "The TCP port that the target service listens on",
+        "level": "spec.port",
+        "type": "int"
+      },
+      {
+        "name": "method",
+        "msg": "The HTTP method of the target request method",
+        "level": "spec.method",
+        "type": "string"
+      },
+      {
+        "name": "path",
+        "msg": "The URI path of the target request",
+        "level": "spec.path",
+        "type": "string"
+      },
+      {
+        "name": "replace_path",
+        "msg": "Specifies the URI path used to replace content",
+        "level": "spec.replace.path",
+        "type": "string"
+      },
+      {
+        "name": "replace_method",
+        "msg": "Specifies the replaced content of the HTTP request method",
+        "level": "spec.replace.method",
+        "type": "string"
+      },
+      {
+        "name": "duration",
+        "msg": "Experiment duration, eg: 30s, 3m, 1h",
+        "level": "spec.duration",
+        "type": "string"
+      }
+    ],
+
+    "io-attr": [
+      {
+        "name": "volumePath",
+        "msg": "The mount point of volume in the target container. Must be the root directory of the mount",
+        "level": "spec.volumePath",
+        "type": "string"
+      },
+      {
+        "name": "path",
+        "msg": "The valid range of fault injections, either a wildcard or a single file",
+        "level": "spec.path",
+        "type": "string"
+      },
+      {
+        "name": "perm",
+        "msg": "File permissions in decimal",
+        "level": "spec.attr.perm",
+        "type": "int"
+      },
+      {
+        "name": "percent",
+        "msg": "Probability of failure per operation, in %",
+        "level": "spec.percent",
+        "type": "int"
+      },
+      {
+        "name": "duration",
+        "msg": "Experiment duration, eg: 30s, 3m, 1h",
+        "level": "spec.duration",
+        "type": "string"
+      }
+    ],
+
+    "io-fault": [
+      {
+        "name": "volumePath",
+        "msg": "The mount point of volume in the target container. Must be the root directory of the mount",
+        "level": "spec.volumePath",
+        "type": "string"
+      },
+      {
+        "name": "path",
+        "msg": "The valid range of fault injections, either a wildcard or a single file",
+        "level": "spec.path",
+        "type": "string"
+      },
+      {
+        "name": "errno",
+        "msg": "returned error number",
+        "level": "spec.errno",
+        "type": "int"
+      },
+      {
+        "name": "percent",
+        "msg": "Probability of failure per operation, in %",
+        "level": "spec.percent",
+        "type": "int"
+      },
+      {
+        "name": "duration",
+        "msg": "Experiment duration, eg: 30s, 3m, 1h",
+        "level": "spec.duration",
+        "type": "string"
+      }
+    ],
+
+    "io-latency": [
+      {
+        "name": "volumePath",
+        "msg": "The mount point of volume in the target container. Must be the root directory of the mount",
+        "level": "spec.volumePath",
+        "type": "string"
+      },
+      {
+        "name": "path",
+        "msg": "The valid range of fault injections, either a wildcard or a single file",
+        "level": "spec.path",
+        "type": "string"
+      },
+      {
+        "name": "delay",
+        "msg": "Specific delay time",
+        "level": "spec.delay",
+        "type": "string"
+      },
+      {
+        "name": "percent",
+        "msg": "Probability of failure per operation, in %",
+        "level": "spec.percent",
+        "type": "int"
+      },
+      {
+        "name": "duration",
+        "msg": "Experiment duration, eg: 30s, 3m, 1h",
+        "level": "spec.duration",
+        "type": "string"
+      }
+    ],
+
+    "io-mistake": [
+      {
+        "name": "volumePath",
+        "msg": "The mount point of volume in the target container. Must be the root directory of the mount",
+        "level": "spec.volumePath",
+        "type": "string"
+      },
+      {
+        "name": "path",
+        "msg": "The valid range of fault injections, either a wildcard or a single file",
+        "level": "spec.path",
+        "type": "string"
+      },
+      {
+        "name": "filling",
+        "msg": "The wrong data to be filled. Only zero (fill 0) or random (fill random bytes) are supported",
+        "level": "spec.mistake.filling",
+        "type": "string"
+      },
+      {
+        "name": "maxOccurrences",
+        "msg": "Maximum number of errors in each operation",
+        "level": "spec.mistake.maxOccurrences",
+        "type": "int"
+      },
+      {
+        "name": "maxLength",
+        "msg": "Maximum length of each error (in bytes)",
+        "level": "spec.mistake.maxLength",
+        "type": "int"
+      },
+      {
+        "name": "methods",
+        "msg": "Type of the file system call that requires injecting fault",
+        "level": "spec.methods",
+        "type": "[]string"
+      },
+      {
+        "name": "percent",
+        "msg": "Probability of failure per operation, in %",
+        "level": "spec.percent",
+        "type": "int"
+      },
+      {
+        "name": "duration",
+        "msg": "Experiment duration, eg: 30s, 3m, 1h",
+        "level": "spec.duration",
+        "type": "string"
+      }
+    ],
+
+    "network-bandwidth": [
+      {
+        "name": "rate",
+        "msg": "Indicates the rate of bandwidth limit. Allows bit, kbit, mbit, gbit, tbit, bps, kbps, mbps, gbps, tbps unit",
+        "level": "spec.bandwidth.rate",
+        "type": "string"
+      },
+      {
+        "name": "limit",
+        "msg": "Indicates the number of bytes waiting in queue",
+        "level": "spec.bandwidth.limit",
+        "type": "int"
+      },
+      {
+        "name": "buffer",
+        "msg": "Indicates the maximum number of bytes that can be sent instantaneously",
+        "level": "spec.bandwidth.buffer",
+        "type": "int"
+      },
+      {
+        "name": "duration",
+        "msg": "Experiment duration, eg: 30s, 3m, 1h",
+        "level": "spec.duration",
+        "type": "string"
+      },
+      {
+        "name": "device",
+        "msg": "interface_name, eg: r1_r2",
+        "level": "spec.device",
+        "type": "string"
+      }
+    ],
+
+    "network-corrupt": [
+      {
+        "name": "corrupt",
+        "msg": "Indicates the probability of packet corruption. Range of value: [0, 100]",
+        "level": "spec.corrupt.corrupt",
+        "type": "string"
+      },
+      {
+        "name": "correlation",
+        "msg": "Indicates the correlation between the probability of current packet corruption and the previous time's packet corruption. Range of value: [0, 100]",
+        "level": "spec.corrupt.correlation",
+        "type": "string"
+      },
+      {
+        "name": "duration",
+        "msg": "Experiment duration, eg: 30s, 3m, 1h",
+        "level": "spec.duration",
+        "type": "string"
+      },
+      {
+        "name": "device",
+        "msg": "interface_name, eg: r1_r2",
+        "level": "spec.device",
+        "type": "string"
+      }
+    ],
+
+    "network-duplicate": [
+      {
+        "name": "duplicate",
+        "msg": "Indicates the probability of packet duplicating. Range of value: [0, 100]",
+        "level": "spec.duplicate.duplicate",
+        "type": "string"
+      },
+      {
+        "name": "correlation",
+        "msg": "Indicates the correlation between the probability of current packet duplicating and the previous time's packet duplicating. Range of value: [0, 100]",
+        "level": "spec.duplicate.correlation",
+        "type": "string"
+      },
+      {
+        "name": "duration",
+        "msg": "Experiment duration, eg: 30s, 3m, 1h",
+        "level": "spec.duration",
+        "type": "string"
+      },
+      {
+        "name": "device",
+        "msg": "interface_name, eg: r1_r2",
+        "level": "spec.device",
+        "type": "string"
+      }
+    ],
+
+    "network-partition": [
+      {
+        "name": "namespaces",
+        "msg": "namespace",
+        "level": "spec.target.selector.namespaces",
+        "type": "[]string"
+      },
+      {
+        "name": "target_label",
+        "msg": "target pod label",
+        "level": "spec.target.selector.labelSelectors.name",
+        "type": "string"
+      },
+      {
+        "name": "duration",
+        "msg": "Experiment duration, eg: 30s, 3m, 1h",
+        "level": "spec.duration",
+        "type": "string"
+      },
+      {
+        "name": "device",
+        "msg": "interface_name, eg: r1_r2",
+        "level": "spec.device",
+        "type": "string"
+      }
+    ],
+
+    "pod-kill": [],
+    
+    "time-shift": [
+      {
+        "name": "timeOffset",
+        "msg": "Specifies the length of time offset",
+        "level": "spec.timeOffset",
+        "type": "string"
+      },
+      {
+        "name": "duration",
+        "msg": "Experiment duration, eg: 30s, 3m, 1h",
+        "level": "spec.duration",
+        "type": "string"
+      }
+    ],
+
+
+    "cpu-stress": [
+      {
+        "name": "load",
+        "msg": "Percentage of CPU occupied, 0~100 for each load worker",
+        "level": "spec.stressors.cpu.load",
+        "type": "int"
+      },
+      {
+        "name": "workers",
+        "msg": "Number of workers to generate load",
+        "level": "spec.stressors.cpu.workers",
+        "type": "int"
+      },
+      {
+        "name": "duration",
+        "msg": "Experiment duration, eg: 30s, 3m, 1h",
+        "level": "spec.duration",
+        "type": "string"
+      }
+    ],
+    "pod-failure": [
+      {
+        "name": "duration",
+        "msg": "Experiment duration, eg: 30s, 3m, 1h",
+        "level": "spec.duration",
+        "type": "string"
+      }
+    ],
+    "memory-stress": [
+      {
+        "name": "size",
+        "msg": "Total memory size to stress, support B, KB, MB, GB and TB",
+        "level": "spec.stressors.memory.size",
+        "type": "string"
+      },
+      {
+        "name": "workers",
+        "msg": "Number of workers to generate load",
+        "level": "spec.stressors.memory.workers",
+        "type": "int"
+      },
+      {
+        "name": "duration",
+        "msg": "Experiment duration, eg: 30s, 3m, 1h",
+        "level": "spec.duration",
+        "type": "string"
+      }
+    ],
+    "network-delay": [
+      {
+        "name": "latency",
+        "msg": "The network latency, eg: 2ms",
+        "level": "spec.delay.latency",
+        "type": "string"
+      },
+      {
+        "name": "jitter",
+        "msg": "The range of the network latency",
+        "level": "spec.delay.jitter",
+        "type": "string"
+      },
+      {
+        "name": "correlation",
+        "msg": "The correlation between the current latency and the previous one. Range of value: [0, 100]",
+        "level": "spec.delay.correlation",
+        "type": "string"
+      },
+      {
+        "name": "duration",
+        "msg": "Experiment duration, eg: 30s, 3m, 1h",
+        "level": "spec.duration",
+        "type": "string"
+      },
+      {
+        "name": "device",
+        "msg": "interface_name, eg: r1_r2",
+        "level": "spec.device",
+        "type": "string"
+      }
+    ],
+    "network-loss": [
+      {
+        "name": "loss",
+        "msg": "The probability of packet loss. Range of value: [0, 100]",
+        "level": "spec.loss.loss",
+        "type": "string"
+      },
+      {
+        "name": "correlation",
+        "msg": "The correlation between the current loss and the previous one. Range of value: [0, 100]",
+        "level": "spec.loss.correlation",
+        "type": "string"
+      },
+      {
+        "name": "duration",
+        "msg": "Experiment duration, eg: 30s, 3m, 1h",
+        "level": "spec.duration",
+        "type": "string"
+      },
+      {
+        "name": "device",
+        "msg": "interface_name, eg: r1_r2",
+        "level": "spec.device",
+        "type": "string"
+      }
+    ]
+  },
+  "predefined": {
+    "name": "metadata.name",
+    "namespace": "spec.selector.namespaces",
+    "labelSelectors": "spec.selector.labelSelectors"
+  }
+}

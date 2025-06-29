@@ -1,0 +1,34 @@
+syntax = "proto3";
+option go_package = "./;netservice";
+package netservice;
+
+message InitRequest {
+    string PodName = 1;
+    string Namespace = 2;
+}
+
+message MakeRequest {
+    string PodName1 = 1;
+    string IfName1 = 2;
+    string Ip1 = 3;
+    string PodName2 = 4;
+    string IfName2 = 5;
+    string Ip2 = 6;
+    string Namespace = 7;
+}
+
+message DeleteRequest {
+    string PodName = 1;
+    string IfName = 2;
+    string Namespace = 3;
+}
+
+message Reply {
+    string message = 1;
+}
+
+service Local {
+    rpc InitLink (InitRequest) returns (Reply) {}
+    rpc MakeLink (MakeRequest) returns (Reply) {}
+    rpc DeleteLink (DeleteRequest) returns (Reply) {}
+}

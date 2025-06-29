@@ -1,0 +1,34 @@
+---
+apiVersion: "apps/v1"
+kind: "Deployment"
+metadata:
+  name: "load-maker-slaver"
+spec:
+  selector:
+    matchLabels:
+      app: "load-maker-slaver"
+  replicas: 1
+
+  minReadySeconds: 5
+  template:
+    metadata:
+      labels:
+        app: "load-maker-slaver"
+    spec:
+      containers:
+        - name: "load-maker"
+          image: "bupt2018/load-maker:4.0"
+          imagePullPolicy: IfNotPresent
+          command: [ "sh" ]
+          args: ["worker.sh"]
+          env:
+            - name: MASTER_HOST
+              value: "load-maker-master-5557"
+            - name: MASTER_PORT
+              value: "5557"
+          resources:
+            limits:
+              cpu: 500m
+              memory: 200Mi
+
+

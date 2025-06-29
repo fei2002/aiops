@@ -1,0 +1,23 @@
+kind: NetworkChaos
+apiVersion: chaos-mesh.org/v1alpha1
+metadata:
+  namespace: chaos-mesh
+  name: {}
+spec:
+  action: partition
+  mode: all
+  selector:
+    namespaces:
+      - {}
+    labelSelectors:
+      name: {}
+  direction: to
+  target:
+    mode: all
+    selector:
+      namespaces:
+        - {}
+      labelSelectors:
+        name: {}
+  duration: {}
+  device: {}

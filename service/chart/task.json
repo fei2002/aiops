@@ -1,0 +1,247 @@
+{
+  "_class": "com.bupt.pigeon.model.InferenceTask",
+  "_id": "6429757bb5e0f259b61b2414",
+  "algorithm": {
+    "_id": "64101a86a1b356774540218f",
+    "author": "aiops",
+    "command": "",
+    "createTimestamp": 1679064832941,
+    "description": "DLinear",
+    "hashString": "-1798096759-17980967599281985048563-976974907638435270",
+    "hyperParameters": {
+      "anomaly_ratio": "1",
+      "batch_size": "128",
+      "c_out": "25",
+      "d_ff": "128",
+      "d_model": "128",
+      "e_layers": "3",
+      "enc_in": "25",
+      "features": "M",
+      "is_training": "1",
+      "pred_len": "100",
+      "seq_len": "100",
+      "train_epochs": "5"
+    },
+    "name": "DLinear",
+    "type": "DEEP_LEARNING",
+    "url": "registry.cn-beijing.aliyuncs.com/bupt2018/ts-lib:latest",
+    "version": "1.0"
+  },
+  "createTimestamp": 1680438651821,
+  "dataSource": {
+    "_id": "64255d4be9e25579e944199d",
+    "createTimestamp": 1680170315626,
+    "hashString": "KAFKAservice_metrics_sock-shop_orders192.168.31.1979092{topic=service_metrics_sock-shop_orders}",
+    "host": "192.168.31.197",
+    "labels": [
+      "PREDICT"
+    ],
+    "name": "service_metrics_sock-shop_orders",
+    "password": "",
+    "port": 9092,
+    "properties": {
+      "groupID": "anomaly_detection_dlinear-service-metrics-sock-shop-orders-a22b63a2",
+      "topic": "service_metrics_sock-shop_orders"
+    },
+    "type": "KAFKA",
+    "username": ""
+  },
+  "excludedFields": [
+    "timestamp",
+    "_id"
+  ],
+  "hashString": "-1798096759-17980967599281985048563-976974907638435270KAFKAservice_metrics_sock-shop_orders192.168.31.1979092{topic=service_metrics_sock-shop_orders}dlinear-service-metrics-sock-shop-orders-1fa9ce17-465466193",
+  "hyperParams": {
+    "window_size": 5,
+    "window_step": 1
+  },
+  "mode": "INFERENCE",
+  "name": "dlinear-service-metrics-sock-shop-orders-a22b63a2",
+  "storage": [
+    {
+      "host": "10.112.169.94",
+      "name": "default_mongo",
+      "password": "root",
+      "port": 30332,
+      "properties": {
+        "db": "evaluation"
+      },
+      "type": "MONGODB",
+      "usage": "result",
+      "username": "root"
+    },
+    {
+      "host": "k8s.personai.cn",
+      "name": "default_redis",
+      "password": "",
+      "port": 30566,
+      "properties": {
+        "db": "0"
+      },
+      "type": "REDIS",
+      "usage": "model",
+      "username": ""
+    }
+  ],
+  "trainTask": {
+    "_id": "64297565b5e0f259b61b2413",
+    "algorithm": {
+      "_id": "64101a86a1b356774540218f",
+      "author": "aiops",
+      "command": "",
+      "createTimestamp": 1679064832941,
+      "description": "DLinear",
+      "hashString": "-1798096759-17980967599281985048563-976974907638435270",
+      "hyperParameters": {
+        "anomaly_ratio": "1",
+        "batch_size": "128",
+        "c_out": "25",
+        "d_ff": "128",
+        "d_model": "128",
+        "e_layers": "3",
+        "enc_in": "25",
+        "features": "M",
+        "is_training": "1",
+        "pred_len": "100",
+        "seq_len": "100",
+        "train_epochs": "5"
+      },
+      "name": "DLinear",
+      "type": "DEEP_LEARNING",
+      "url": "registry.cn-beijing.aliyuncs.com/bupt2018/ts-lib:latest",
+      "version": "1.0"
+    },
+    "ckptName": "DLinear-service_metrics_sock-shop_orders-1fa9ce17",
+    "createTimestamp": 1680438629668,
+    "dataSource": {
+      "_id": "64255e77e9e25579e94419b0",
+      "createTimestamp": 1680170615635,
+      "hashString": "MONGODBservice_metrics_sock-shop_orders10.112.169.9430332rootroot{database=pure_data, collection=service_metrics_sock-shop_orders, fields=[timestamp, service_cpu_cfs_periods_total, service_cpu_cfs_throttled_periods_total, service_cpu_cfs_throttled_seconds_total, service_cpu_usage_seconds_total, service_fs_reads_bytes_total, service_fs_reads_total, service_fs_writes_bytes_total, service_fs_writes_total, service_memory_cache, service_memory_failcnt, service_memory_failures_total, service_memory_max_usage_bytes, service_memory_rss, service_memory_swap, service_memory_usage_bytes, service_network_receive_bytes_total, service_network_receive_errors_total, service_network_receive_packets_dropped_total, service_network_receive_packets_total, service_network_transmit_bytes_total, service_network_transmit_errors_total, service_network_transmit_packets_dropped_total, service_network_transmit_packets_total]}",
+      "host": "10.112.169.94",
+      "labels": [
+        "TEST",
+        "TRAIN"
+      ],
+      "name": "service_metrics_sock-shop_orders",
+      "password": "root",
+      "port": 30332,
+      "properties": {
+        "collection": "service_metrics_sock-shop_orders",
+        "database": "pure_data",
+        "db": "pure_data",
+        "fields": [
+          "timestamp",
+          "service_cpu_cfs_periods_total",
+          "service_cpu_cfs_throttled_periods_total",
+          "service_cpu_cfs_throttled_seconds_total",
+          "service_cpu_usage_seconds_total",
+          "service_fs_reads_bytes_total",
+          "service_fs_reads_total",
+          "service_fs_writes_bytes_total",
+          "service_fs_writes_total",
+          "service_memory_cache",
+          "service_memory_failcnt",
+          "service_memory_failures_total",
+          "service_memory_max_usage_bytes",
+          "service_memory_rss",
+          "service_memory_swap",
+          "service_memory_usage_bytes",
+          "service_network_receive_bytes_total",
+          "service_network_receive_errors_total",
+          "service_network_receive_packets_dropped_total",
+          "service_network_receive_packets_total",
+          "service_network_transmit_bytes_total",
+          "service_network_transmit_errors_total",
+          "service_network_transmit_packets_dropped_total",
+          "service_network_transmit_packets_total"
+        ]
+      },
+      "type": "MONGODB",
+      "username": "root"
+    },
+    "datasetEndTime": -1,
+    "datasetStartTime": -1,
+    "hashString": "dlinear-service-metrics-sock-shop-orders-1fa9ce17",
+    "hyperParams": {
+      "anomaly_ratio": "1",
+      "batch_size": "128",
+      "c_out": "25",
+      "d_ff": "128",
+      "d_model": "128",
+      "e_layers": "3",
+      "enc_in": "25",
+      "features": "M",
+      "is_training": "1",
+      "pred_len": "5",
+      "seq_len": "5",
+      "train_epochs": "5"
+    },
+    "mode": "TRAIN",
+    "selectedFields": [
+      "service_cpu_cfs_periods_total",
+      "service_cpu_cfs_throttled_periods_total",
+      "service_cpu_cfs_throttled_seconds_total",
+      "service_cpu_usage_seconds_total",
+      "service_fs_reads_bytes_total",
+      "service_fs_reads_total",
+      "service_fs_writes_bytes_total",
+      "service_fs_writes_total",
+      "service_memory_cache",
+      "service_memory_failcnt",
+      "service_memory_failures_total",
+      "service_memory_max_usage_bytes",
+      "service_memory_rss",
+      "service_memory_swap",
+      "service_memory_usage_bytes",
+      "service_network_receive_bytes_total",
+      "service_network_receive_errors_total",
+      "service_network_receive_packets_dropped_total",
+      "service_network_receive_packets_total",
+      "service_network_transmit_bytes_total",
+      "service_network_transmit_errors_total",
+      "service_network_transmit_packets_dropped_total",
+      "service_network_transmit_packets_total"
+    ],
+    "status": "SUCCESS",
+    "storage": [
+      {
+        "host": "k8s.personai.cn",
+        "name": "default_redis",
+        "password": "",
+        "port": 30566,
+        "properties": {
+          "db": "0"
+        },
+        "type": "REDIS",
+        "usage": "model",
+        "username": ""
+      },
+      {
+        "host": "10.112.169.94",
+        "name": "default_mongo",
+        "password": "root",
+        "port": 30332,
+        "properties": {
+          "db": "evaluation"
+        },
+        "type": "MONGODB",
+        "usage": "result",
+        "username": "root"
+      }
+    ],
+    "trainTaskName": "dlinear-service-metrics-sock-shop-orders-1fa9ce17",
+    "workload": {
+      "createTimestamp": 1680438629711,
+      "namespace": "train-job",
+      "workloadID": "ba161d17-2a3a-4ed8-9c7c-1135934eb42f",
+      "workloadName": "dlinear-service-metrics-sock-shop-orders-1fa9ce17"
+    }
+  },
+  "workload": {
+    "createTimestamp": 1680438651840,
+    "namespace": "schedule",
+    "status": "Running",
+    "workloadID": "9c33bb01-229a-4e41-bfbb-d5ae84f4035d",
+    "workloadName": "dlinear-service-metrics-sock-shop-orders-a22b63a2"
+  }
+}

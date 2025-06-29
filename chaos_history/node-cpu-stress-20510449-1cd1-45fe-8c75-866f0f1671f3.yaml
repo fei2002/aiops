@@ -1,0 +1,18 @@
+# ALERT: DO NOT USE CTRL+L TO FORMAT THIS FILE.
+# ALERT: DO NOT USE CTRL+L TO FORMAT THIS FILE.
+# ALERT: DO NOT USE CTRL+L TO FORMAT THIS FILE.
+
+kind: PhysicalMachineChaos
+apiVersion: chaos-mesh.org/v1alpha1
+metadata:
+  namespace: chaos-mesh
+  name: node-cpu-stress-f9c09bc9-1f88-4ab0-8756-e58cc3948a6b
+spec:
+  action: stress-cpu
+  address:
+    - http://192.168.31.25:31767
+  mode: all
+  stress-cpu:
+    load: 80
+    workers: 32
+  duration: 1m

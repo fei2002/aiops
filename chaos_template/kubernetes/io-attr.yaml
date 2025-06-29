@@ -1,0 +1,19 @@
+kind: IOChaos
+apiVersion: chaos-mesh.org/v1alpha1
+metadata:
+  namespace: chaos-mesh
+  name: {}
+spec:
+  action: attrOverride
+  mode: all
+  selector:
+    namespaces:
+      - {}
+    labelSelectors:
+      name: {}
+  volumePath: {}
+  path: {}
+  attr:
+    perm: {}
+  percent: {}
+  duration: {}
