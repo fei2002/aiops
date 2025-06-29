@@ -7,6 +7,11 @@ from config.config import mongo_client_eval, mongo_client_chaos
 
 evaluation_bp = Blueprint('evaluation', __name__, url_prefix='/anomaly_detection/evaluation')
 
+@evaluation_bp.route('/evaluate-now', methods=['POST'])
+def trigger_evaluation():
+    from service.evaluation import evaluate_topology_links
+    success = evaluate_topology_links("default")
+    return {"status": "success" if success else "failed"}, 200
 
 @evaluation_bp.before_request
 def get_data_for_evaluation():
