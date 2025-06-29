@@ -9,7 +9,6 @@ from loguru import logger
 from requests import HTTPError
 
 from service.mongo import MongoConnectClient
-from service.k8s import exec_ping_or_traceroute_command, get_targetPod_IP
 import re
 from datetime import datetime
 from loguru import logger
@@ -1339,6 +1338,7 @@ def parse_ping_output(output: str):
 
 def evaluate_topology_links(namespace: str):
     from service.k8s import load_topology_yaml
+    from service.k8s import exec_ping_or_traceroute_command, get_targetPod_IP  # 延迟导入
     load_config()
     topology_docs = load_topology_yaml(namespace=namespace)
     updated_docs = []
