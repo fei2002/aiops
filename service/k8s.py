@@ -1337,8 +1337,6 @@ def parse_ping_output(output: str):
         return -1.0, -1.0
 
 def evaluate_topology_links(namespace: str):
-    from service.k8s import load_topology_yaml
-    from service.k8s import exec_ping_or_traceroute_command, get_targetPod_IP  # 延迟导入
     load_config()
     topology_docs = load_topology_yaml(namespace=namespace)
     updated_docs = []
