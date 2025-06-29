@@ -18,51 +18,49 @@ def parse_ping_output(output: str):
         return -1.0, -1.0
 
 
-def evaluate_topology_links(namespace: str, task: str = "node_metrics_k8s1"):
-    """
-    :param namespace: k8s namespace
-    :param task: 插入的 MongoDB 集合名称，默认是 node_metrics_k8s1
-    :return: updated topology docs
-    """
-    load_config()
-    topology_docs = load_topology_yaml(namespace=namespace)
-    updated_docs = []
-
-    for doc in topology_docs["items"]:
-        if doc['kind'] != 'Topology':
-            continue
-
-        node_name = doc['metadata']['name']
-        links = doc['spec'].get('links', [])
-
-        for link in links:
-            peer_pod = link['peer_pod']
-            uid = link['uid']
-
-            try:
-                target_ip = get_targetPod_IP(namespace, peer_pod)
-                if not target_ip:
-                    logger.warning(f"Cannot get target IP for {peer_pod}")
-                    continue
-
-                output = exec_ping_or_traceroute_command(namespace, node_name, target_ip, command_type="ping")
-                latency, loss_rate = parse_ping_output(output)
-
-                # ✅ 写入到 evaluation.task (如 evaluation.node_metrics_k8s1)
-                mongo_client_eval.db[task].insert_one({
-                    "timestamp": datetime.utcnow().timestamp(),
-                    "metrics": [latency, loss_rate],
-                    "target_list": f"{node_name}->{peer_pod}",
-                    "predicted": 0  # 默认可填 0，后续模型更新可替换
-                })
-
-                # ✅ 更新 link 信息（可用于展示或前端刷新）
-                link['latency_ms'] = latency
-                link['loss_rate_percent'] = loss_rate
-
-            except Exception as e:
-                logger.warning(f"Failed to evaluate link {node_name} -> {peer_pod}: {str(e)}")
-
-        updated_docs.append(doc)
-
-    return updated_docs
+def evaluate_topology_links(namespace: str, task: str = "network_metrics"):
+    """增强版链路评估函数"""
+    try:
+        # 获取拓扑数据
+        topology_docs = load_topology_yaml(namespace)
+        updated_count = 0
+        
+        # 获取MongoDB集合
+        collection = mongo_client_eval.evaluation[task]  # 使用evaluation数据库
+        
+        for doc in topology_docs["items"]:
+            if doc['kind'] != 'Topology':
+                continue
+                
+            node_name = doc['metadata']['name']
+            for link in doc['spec'].get('links', []):
+                try:
+                    # 执行ping测试
+                    output = exec_ping_or_traceroute_command(
+                        namespace, 
+                        node_name, 
+                        get_targetPod_IP(namespace, link['peer_pod']),
+                        "ping"
+                    )
+                    latency, loss = parse_ping_output(output)
+                    
+                    # 写入MongoDB
+                    collection.insert_one({
+                        "timestamp": datetime.utcnow(),
+                        "source": node_name,
+                        "target": link['peer_pod'],
+                        "latency_ms": latency,
+                        "loss_percent": loss,
+                        "link_id": link['uid']
+                    })
+                    updated_count += 1
+                    
+                except Exception as e:
+                    logger.error(f"链路 {node_name}->{link['peer_pod']} 测试失败: {str(e)}")
+        
+        logger.success(f"成功写入 {updated_count} 条链路指标到 evaluation.{task}")
+        return True
+        
+    except Exception as e:
+        logger.critical(f"拓扑评估全局错误: {str(e)}")
+        return False
