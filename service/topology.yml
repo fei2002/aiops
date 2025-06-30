@@ -1,0 +1,10 @@
+# file: test-topology.yaml
+apiVersion: aiops.io/v1
+kind: Topology
+metadata:
+  name: test-topo-a
+  namespace: default
+spec:
+  links:
+    - uid: link-a-b
+      peer_pod: pod-b
